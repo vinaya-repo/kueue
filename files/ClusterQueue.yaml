@@ -1,0 +1,22 @@
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: my-cluster-queue
+spec:
+  preemption:
+    withinClusterQueue: LowerPriority
+  namespaceSelector: 
+    matchLabels:
+      kubernetes.io/metadata.name: kueue-test
+      kueue-managed: 'true'
+  resourceGroups:
+    - coveredResources: ["cpu", "memory", "pods"]
+      flavors:
+        - name: "default-flavor"
+          resources:
+            - name: "cpu"
+              nominalQuota: 1
+            - name: "memory"
+              nominalQuota: 4Gi
+            - name: "pods"
+              nominalQuota: 3

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stressor-job-2
+  namespace: kueue-test
+spec:
+  template:
+    metadata:
+      labels:
+        app: cpu-stressor
+        kueue.x-k8s.io/queue-name: my-local-queue
+    spec:
+      containers:
+      - name: stress
+        image: polinux/stress
+        command: ["stress"]
+        args: ["--cpu", "4", "--timeout", "60s"]
+        resources:
+          requests:
+            cpu: "1"
+          limits:
+            cpu: "3"
+      restartPolicy: Never
+  backoffLimit: 1

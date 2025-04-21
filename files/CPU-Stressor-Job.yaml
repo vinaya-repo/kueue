@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stressor-job
+  namespace: kueue-test
+spec:
+  template:
+    metadata:
+      labels:
+        app: cpu-stressor
+        kueue.x-k8s.io/queue-name: my-local-queue
+    spec:
+      containers:
+        - name: cpu-stressor
+          image: narmidm/k8s-pod-cpu-stressor:latest
+          args:
+            - "-cpu=0.8"
+            - "-duration=1m"
+            # - "-forever"
+          resources:
+            requests:
+              cpu: "1"
+            limits:
+              cpu: "4"
+      restartPolicy: Never
+  backoffLimit: 3

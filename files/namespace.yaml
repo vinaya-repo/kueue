@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kueue-test
+  labels:
+    kueue-managed: 'true'     # Not sure about this label
+    kueue.x-k8s.io/managed-namespace: true
